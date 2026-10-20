@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b171b">
+<meta name="theme-color" content="#071725">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/ascension-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icons/ascension-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Plan your ARK: Survival Ascended endgame leveling with a cumulative XP lookup through level 245.">
 <title>Ascension • ASA XP Calculator</title>
 <style>
@@ -71,6 +76,15 @@ details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{displ
 
 .obelisk-beam{opacity:.4;transform-box:view-box;transform-origin:1415px 235px;animation:obelisk-breathe 4.8s ease-in-out infinite;pointer-events:none}@keyframes obelisk-breathe{0%,100%{opacity:.16}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.obelisk-beam{animation:none;opacity:.3}}
+
+/* Compact installation control: anchored to the viewport corner, outside the form. */
+.app-tools{position:absolute;top:max(12px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));z-index:5;display:flex;justify-content:flex-end;min-width:0;max-width:calc(100% - 32px);overflow:visible}
+.install-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:0;max-width:100%;min-height:44px;padding:8px 11px;font-family:inherit;font-size:11px;font-weight:500;letter-spacing:.3px;color:#afcedd;background:#0a243b70;border:1px solid #88b7cb50;border-radius:1px;box-shadow:none;overflow:hidden}
+.install-button svg{width:14px;height:14px;flex:0 0 14px;overflow:hidden;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
+.install-button:hover{background:#244e6b60;border-color:#a3d3e099}
+.install-help{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 32px));max-width:calc(100vw - 32px);min-width:0;padding:15px;background:#071b2cf5;border:1px solid #82bbd066;box-shadow:0 8px 24px #020a1455;overflow:hidden;font-size:12px;line-height:1.6;color:#bbd5e2;overflow-wrap:anywhere}
+.install-help p{margin:0 0 10px}.install-help button{display:block;margin-left:auto;min-height:40px;padding:7px 12px;font-family:inherit;font-size:11px;background:#163b5155;border:1px solid #88b7cb55;box-shadow:none;color:#bbd5e2}
+.app-tools[hidden],.install-help[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -87,6 +101,10 @@ details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{displ
 </g></g></g>
 </svg></div>
 <div class="scene-mist" aria-hidden="true"><span></span><span></span></div>
+<div class="app-tools" id="app-tools" hidden>
+<button type="button" class="install-button" id="install-app" aria-label="Install Ascension XP Calculator" aria-controls="install-help" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1V10M4 6L8 10 12 6M2 11V14H14V11"/></svg><span>Install</span></button>
+<div class="install-help" id="install-help" role="region" aria-label="Install calculator" hidden><p id="install-help-text"></p><button type="button" id="install-close">Got it</button></div>
+</div>
 <main>
 <header class="hero"><div class="eyebrow">ARK: Survival Ascended</div><h1>Ascension<span class="title-sub">XP Calculator</span></h1><p class="intro">Just one more level… and a few billion XP.</p></header>
 <section class="panel" aria-label="XP calculator">
@@ -442,5 +460,6 @@ flightMotion.addEventListener('change', () => { stopFlight(); scheduleFlight(tru
 scheduleFlight(true);
 
 </script>
+<script src="install.js" defer></script>
 </body>
 </html>

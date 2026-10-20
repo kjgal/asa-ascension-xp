@@ -8,7 +8,9 @@ Enter a current and target level (1–245), then choose **Calculate** to see the
 
 This is a static site with no build step or dependencies. Serve the repository root with any static web server, for example `python3 -m http.server 8000`, then open http://localhost:8000. For static hosting, publish the repository root.
 
-Current hosted preview: https://asa-ascension-xp.kaitlyn-mccaul.chatgpt.site
+Live app: https://kjgal.github.io/asa-ascension-xp/
+
+Use the small **Install** button to add the calculator to your device. A service worker caches the app and artwork for offline use after the first successful load. Installation options depend on the browser.
 
 ## Data
 
