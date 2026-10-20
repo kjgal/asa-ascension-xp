@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b171b">
+<meta name="description" content="Plan your ARK: Survival Ascended endgame leveling with a cumulative XP lookup through level 245.">
+<title>Ascension • ASA XP Calculator</title>
+<style>
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/chakra-petch-400.ttf') format('truetype')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/chakra-petch-500.ttf') format('truetype')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/chakra-petch-600.ttf') format('truetype')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/chakra-petch-700.ttf') format('truetype')}
+
+
+:root{color-scheme:dark;--bg:#0b141a;--card:#092039;--line:#568aa055;--accent:#9acbdc;--text:#e2eff5;--muted:#acc2ce;--error:#efb6a6;font-family:'Chakra Petch',system-ui,sans-serif}
+*{box-sizing:border-box;min-width:0}html{min-height:100%;background:var(--bg)}body{margin:0;min-height:100svh;color:var(--text);background:var(--bg);font-size:15px;line-height:1.5;isolation:isolate}body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(#07121a28,#07121a60),url('assets/ascension-night.webp') center/cover no-repeat}
+main{width:min(calc(100% - 48px),680px);margin:auto;padding:clamp(36px,7vh,74px) 0 40px;overflow-wrap:anywhere}.hero{margin-bottom:32px;text-shadow:2px 2px #02090d}.eyebrow{color:#b6c8c8;text-transform:uppercase;font-size:11px;letter-spacing:1.6px;font-weight:700}h1{font-size:clamp(34px,6vw,49px);font-weight:700;line-height:1.1;letter-spacing:1px;text-transform:uppercase;margin:12px 0 20px}.title-sub{display:block;font-size:.45em;color:var(--accent);letter-spacing:2px;margin-top:10px}p{margin:0}
+/* A quiet holographic surface tinted from the surrounding landscape. */
+.panel{position:relative;min-width:0;max-width:100%;margin:0 4px;padding:26px;background:linear-gradient(145deg,#0c294c99,#071b2cbb);border:1px solid #82bbd04d;border-radius:2px;overflow:visible;box-shadow:inset 0 0 28px #5bb3db06,0 0 22px #79c9ed08,0 16px 45px #020a1433}
+.inputs{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);gap:18px;align-items:center;min-width:0;max-width:100%;overflow:visible}.field{min-width:0;max-width:100%}label{display:block;color:#c3d8e4;font-size:12px;font-weight:700;margin-bottom:10px}input,button{font-family:'Chakra Petch',system-ui,sans-serif;min-width:0;max-width:100%;cursor:pointer;color:#cce7f3;background:#26506b26;border:1px solid #93c7dc66;border-radius:1px;padding:10px 16px;min-height:44px;font-size:12px;font-weight:600;box-shadow:inset 0 0 12px #80cdeb08;transition:background .15s,border-color .15s}input{display:block;width:100%;min-height:66px;padding:12px 14px;color:var(--text);background:#05162870;border:1px solid #75a7bf61;border-radius:1px;box-shadow:inset 0 0 18px #020d1922;font-weight:700;font-size:32px;font-variant-numeric:tabular-nums;line-height:1.2}input:hover{border-color:#a1d1e3a3;background:#0d2c4766}input:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}input[aria-invalid=true]{border-color:var(--error)}.arrow{font-size:23px;color:#8fb3c9;text-align:center}
+.result{margin-top:25px;padding:22px 0 0;background:transparent;border:0;border-top:1px solid #82bbd030;border-radius:0;box-shadow:none;min-width:0;max-width:100%;overflow:hidden}.result-top{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:space-between;align-items:center;min-width:0;max-width:100%;overflow:hidden}.caption{font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#a4c8db}.pill{font-size:11px;color:#a8c5d5;line-height:1.5}.amount{display:block;font-size:clamp(25px,5.4vw,42px);line-height:1.3;font-weight:700;letter-spacing:-1px;color:#d8f1fc;text-shadow:0 0 18px #8ccde02b;margin:14px 0 0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0;max-width:100%;margin:22px 0 0;padding-bottom:0;overflow:visible}button{font-family:'Chakra Petch',system-ui,sans-serif;cursor:pointer;color:#d0e9df;background:#263f3b;border:2px solid #799f96;border-radius:0;padding:10px 16px;min-height:44px;font-size:12px;font-weight:700;box-shadow:3px 3px #0c1013;transition:none}button:hover{background:#33628350;border-color:#b0e5f1b3}button:active{transform:translateY(1px);background:#41789755;box-shadow:none}button:disabled{opacity:.55;cursor:default;transform:none}.copy-status{font-size:11px;color:var(--muted)}.error{color:var(--error);font-size:12px;margin-top:16px}.error[hidden]{display:none}
+/* Compact game-menu disclosure below the title, matching the primary button. */
+details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{display:inline-block;cursor:pointer;list-style:none;font-weight:600;color:#bbd3e2;background:#0a203666;border:1px solid #75a7bf4d;border-radius:1px;box-shadow:none;min-height:40px;padding:9px 13px;font-size:11px;line-height:1.5}summary::-webkit-details-marker{display:none}summary:before{content:"+";display:inline-block;margin-right:9px;color:var(--accent)}details[open] summary:before{content:"−"}summary:hover{border-color:#99ccde99;background:#23496555}details[open]{margin:0 4px;padding:14px 16px 16px;background:#081e32c9;border:1px solid #75a7bf4d;box-shadow:0 8px 26px #020a1426}details[open] summary{margin:-4px 0 4px -6px;background:#23496555;border-color:#75a7bf66;color:#cde8f2}details p{color:var(--muted);font-size:11px;margin-top:15px;line-height:1.6}.data-note{font-size:10px;color:#a0afb3;margin-top:8px}.breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:16px 0 0;min-width:0;max-width:100%;overflow:hidden}.breakdown dt{color:var(--muted);font-size:11px}.breakdown dd{margin:6px 0 0;color:#d0e5f0;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}noscript{display:block;padding:18px;color:var(--error)}
+@media(max-width:520px){main{width:calc(100% - 40px);padding-top:34px}.hero{margin-bottom:28px}.eyebrow{font-size:10px}h1{font-size:35px}.title-sub{font-size:17px;letter-spacing:1.4px}.panel{padding:22px 19px}.inputs{gap:10px;grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr)}label{font-size:11px}input{font-size:28px;padding:12px 10px;min-height:62px}.arrow{font-size:19px}.result{padding:20px 0 0;margin-top:22px}.amount{font-size:clamp(22px,6.9vw,34px);letter-spacing:-1px;margin-top:13px}.caption,.pill{font-size:10px}.breakdown{gap:10px}.breakdown dd{font-size:12px}body:before{background-position:100% center}}
+
+
+.panel:before{content:"";position:absolute;inset:-1px;pointer-events:none;background:linear-gradient(#a5dbed,#a5dbed) left top/14px 1px no-repeat,linear-gradient(#a5dbed,#a5dbed) left top/1px 14px no-repeat,linear-gradient(#a5dbed,#a5dbed) right top/14px 1px no-repeat,linear-gradient(#a5dbed,#a5dbed) right top/1px 14px no-repeat,linear-gradient(#a5dbed,#a5dbed) left bottom/14px 1px no-repeat,linear-gradient(#a5dbed,#a5dbed) left bottom/1px 14px no-repeat,linear-gradient(#a5dbed,#a5dbed) right bottom/14px 1px no-repeat,linear-gradient(#a5dbed,#a5dbed) right bottom/1px 14px no-repeat;opacity:.7}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+.xp-visual{margin-top:23px;min-width:0;max-width:100%;--earned:0%;overflow:hidden;padding:2px 0 1px}.xp-visual[hidden]{display:none}.xp-meter-caption,.xp-meter-levels{display:flex;justify-content:space-between;gap:12px;min-width:0;max-width:100%;overflow:hidden;font-size:11px;color:#a8c8da}.xp-meter-caption{margin-bottom:11px}.xp-meter-caption strong{font-weight:600;color:#d0ecf7}.xp-track{height:12px;border:1px solid #8fc3d14d;background:#03132180;position:relative;min-width:0;max-width:100%;overflow:hidden;border-radius:1px}.xp-fill{position:absolute;inset:0 auto 0 0;width:var(--earned);background:linear-gradient(90deg,#386b8a99,#91cedddd);box-shadow:0 0 12px #99d9eb40;transition:width .8s cubic-bezier(.2,.7,.2,1)}.xp-marker{position:absolute;left:clamp(0px,var(--earned),calc(100% - 2px));top:0;bottom:0;width:2px;background:#d8f7ff;box-shadow:0 0 7px #b2e5ef;transition:left .8s cubic-bezier(.2,.7,.2,1)}.xp-track:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),#16344799 calc(10% - 1px) 10%)}.xp-sweep{position:absolute;inset:0 auto 0 -30%;width:24%;background:linear-gradient(90deg,transparent,#c9f4ff66,transparent);opacity:0;pointer-events:none}.xp-visual.updating .xp-sweep{animation:xp-sweep 1.05s ease-out 1}.xp-meter-levels{margin-top:8px;font-size:10px;color:#9bb8ca}@keyframes xp-sweep{0%{transform:translateX(0);opacity:0}20%{opacity:.75}100%{transform:translateX(550%);opacity:0}}
+@media(prefers-reduced-motion:reduce){.xp-fill,.xp-marker{transition:none}.xp-visual.updating .xp-sweep{animation:none}}
+
+
+.intro{max-width:440px;font-size:14px;line-height:1.55;color:#b7cfdd;text-shadow:0 1px 8px #020b12;margin-top:0}input::placeholder{color:#90aebe;opacity:.65;font-size:.65em;font-weight:400}button:disabled{opacity:.45;cursor:default}button:disabled:active{transform:none}
+
+.xp-breakdown{border-top:1px solid #82bbd030;padding-top:17px;margin-top:21px}.xp-breakdown[hidden]{display:none}
+
+/* Quiet tagline and gentle contrast rather than another header box. */
+.hero{position:relative;isolation:isolate;margin-bottom:38px}.hero:before{content:"";position:absolute;inset:-16px -20px -12px;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#06162755,transparent 85%);filter:blur(12px)}
+.hero .intro{font-family:'Chakra Petch',system-ui,sans-serif;font-size:13px;font-weight:400;line-height:1.7;max-width:26ch;color:#a9c2d2;margin-top:6px;text-shadow:0 1px 8px #030c18}
+@media(max-width:520px){body:before{background-position:95% center}.hero{margin-bottom:32px}.hero .intro{font-size:12px;max-width:25ch}}
+
+
+/* Atmosphere stays behind the interface and never moves the landscape itself. */
+.scene-mist{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;contain:paint}.scene-mist span{position:absolute;inset:-14%;min-width:0;background:radial-gradient(ellipse at 28% 68%,#a7d5e31c 0,transparent 45%),radial-gradient(ellipse at 73% 81%,#93c7db14 0,transparent 43%);opacity:.65;animation:mist-drift 46s ease-in-out infinite alternate}.scene-mist span+span{background:radial-gradient(ellipse at 72% 59%,#abcddd16 0,transparent 40%);opacity:.5;animation:mist-drift-back 63s ease-in-out infinite alternate}
+@keyframes mist-drift{from{transform:translate3d(-6%,2%,0)}to{transform:translate3d(7%,-1%,0)}}@keyframes mist-drift-back{from{transform:translate3d(7%,-1%,0)}to{transform:translate3d(-7%,2%,0)}}
+.xp-marker{animation:marker-beacon 3.8s ease-in-out infinite}@keyframes marker-beacon{0%,100%{opacity:.65;box-shadow:0 0 4px #9ed1e180}50%{opacity:1;box-shadow:0 0 11px #b2e5efb3}}
+.reset-row{display:flex;justify-content:flex-end;flex-wrap:wrap;min-width:0;max-width:100%;overflow:visible;margin-top:22px}.reset-row button{font-family:'Chakra Petch',system-ui,sans-serif;font-size:12px;font-weight:500;min-width:0;max-width:100%;min-height:44px;padding:9px 15px;background:#12344d26;border:1px solid #88b7cb55;border-radius:1px;box-shadow:none;color:#adcddd;cursor:pointer}.reset-row button:hover:not(:disabled){background:#244e6b50;border-color:#a3d3e08c}.reset-row button:disabled{opacity:.35;cursor:default}
+@media(prefers-reduced-motion:reduce){.scene-mist span,.xp-marker{animation:none;transform:none}.scene-mist span{opacity:.35}.xp-marker{opacity:1}}
+
+
+.calculate-button{display:block;width:100%;min-width:0;max-width:100%;margin-top:21px;padding:12px 16px;min-height:46px;font-family:'Chakra Petch',system-ui,sans-serif;font-size:14px;font-weight:600;background:#24527355;color:#d8f0fa;border:1px solid #a3d4e399;border-radius:1px;box-shadow:inset 0 0 16px #9fdae20a}.calculate-button:hover:not(:disabled){background:#346b8b66;border-color:#c1eaf2}.calculate-button:disabled{opacity:.55;cursor:wait}.result[hidden]{display:none}
+/* Broader, more visible banks of mist move across the lake behind the controls. */
+.scene-mist span{inset:-24%;background:radial-gradient(ellipse at 22% 65%,#acd8e33d 0,#8ac1d51c 24%,transparent 51%),radial-gradient(ellipse at 78% 82%,#a6ced52e 0,transparent 42%);opacity:.8;animation-duration:23s}.scene-mist span+span{background:radial-gradient(ellipse at 76% 49%,#b4d3df2e 0,#9fc8db12 23%,transparent 45%);opacity:.65;animation-duration:32s}
+@keyframes mist-drift{from{transform:translate3d(-13%,3%,0)}to{transform:translate3d(13%,-2%,0)}}@keyframes mist-drift-back{from{transform:translate3d(13%,-2%,0)}to{transform:translate3d(-13%,3%,0)}}
+@media(prefers-reduced-motion:reduce){.scene-mist span{animation:none;transform:none;opacity:.35}}
+
+
+/* Shaped fog banks reveal their travel against the trees and water. */
+.scene-mist span{inset:auto;left:-40%;top:51%;width:180%;height:34%;min-width:0;background:url('assets/lake-mist-a.svg') center/100% 100% no-repeat;opacity:.60;animation:lake-mist-travel 24s linear -7s infinite alternate;will-change:transform}
+.scene-mist span+span{inset:auto;left:-40%;top:71%;width:180%;height:25%;background:url('assets/lake-mist-b.svg') center/100% 100% no-repeat;opacity:.52;animation:lake-mist-return 30s linear -12s infinite alternate}
+@keyframes lake-mist-travel{from{transform:translate3d(-10%,0,0)}to{transform:translate3d(10%,-3%,0)}}
+@keyframes lake-mist-return{from{transform:translate3d(10%,0,0)}to{transform:translate3d(-10%,3%,0)}}
+@media(prefers-reduced-motion:reduce){.scene-mist span,.scene-mist span+span{animation:none;transform:none;will-change:auto}}
+
+
+.sky-flight{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;contain:paint}.sky-flight > #flight-scene{position:absolute;display:block;max-width:none;min-width:0;overflow:hidden}.sky-flight image{image-rendering:auto}
+@media(prefers-reduced-motion:reduce){#distant-wyvern{display:none}}
+
+.obelisk-beam{opacity:.4;transform-box:view-box;transform-origin:1415px 235px;animation:obelisk-breathe 4.8s ease-in-out infinite;pointer-events:none}@keyframes obelisk-breathe{0%,100%{opacity:.16}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.obelisk-beam{animation:none;opacity:.3}}
+</style>
+</head>
+<body>
+<div class="sky-flight" aria-hidden="true"><svg id="flight-scene" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" focusable="false">
+<defs><linearGradient id="obelisk-beam-light" x1="0" y1="24" x2="0" y2="425" gradientUnits="userSpaceOnUse"><stop stop-color="#79dbff" stop-opacity="0"/><stop offset=".28" stop-color="#79dbff" stop-opacity=".7"/><stop offset=".5" stop-color="#c4f6ff" stop-opacity="1"/><stop offset="1" stop-color="#b1f1ff" stop-opacity=".95"/></linearGradient><filter id="obelisk-beam-halo" filterUnits="userSpaceOnUse" x="1382" y="0" width="66" height="450"><feGaussianBlur stdDeviation="2.4"/></filter><mask id="sky-flight-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024"><path fill="white" d="M0 0H1536V360L1480 362 1448 390 1390 455 1350 430 1320 382 1290 414 1260 465 1225 491 1170 465 1130 490 1080 490 1020 453 970 485 936 490 918 520 880 535 830 520 810 532 770 524 730 495 690 504 665 513 636 493 604 453 565 440 534 459 511 403 478 386 444 422 415 397 389 433 365 396 344 366 328 295 302 330 278 288 252 215 225 265 197 311 169 302 135 355 108 339 90 300 60 292 0 288Z"/><path fill="black" d="M1372 370 1376 222 1398 135 1408 44 1411 139 1435 215 1439 320 1423 390 1407 424 1398 378Z"/></mask></defs>
+<g class="obelisk-beam"><path d="M1415 24V199L1427 234 1415 268 1403 234 1415 199M1415 268V425" stroke="url(#obelisk-beam-light)" stroke-width="9" filter="url(#obelisk-beam-halo)" fill="none" opacity=".9"/><path d="M1415 24V199L1427 234 1415 268 1403 234 1415 199M1415 268V425" stroke="url(#obelisk-beam-light)" stroke-width="2.2" fill="none"/></g>
+<g mask="url(#sky-flight-mask)"><g id="distant-wyvern" visibility="hidden"><!-- A group has no viewport edge to crop the rotating wing tips. -->
+<g id="wyvern-rig" transform="translate(-31 -15.5) scale(.062)">
+<defs><image id="wyvern-base" href="assets/distant-wyvern.webp" x="0" y="0" width="1000" height="500" preserveAspectRatio="none"/><clipPath id="wyvern-wing-far"><path d="M0 0H420V310L370 330 310 348 265 345 245 300 200 275 140 240 80 220H0Z"/></clipPath><clipPath id="wyvern-wing-near"><path d="M350 310L420 260 520 150 580 80 650 20H1000V320H780L700 300 630 315 550 335 490 350 420 365 360 350Z"/></clipPath><mask id="wyvern-body" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="500"><rect width="1000" height="500" fill="white"/><path d="M0 0H420V310L370 330 310 348 265 345 245 300 200 275 140 240 80 220H0Z" fill="black"/><path d="M350 310L420 260 520 150 580 80 650 20H1000V320H780L700 300 630 315 550 335 490 350 420 365 360 350Z" fill="black"/></mask></defs>
+<ellipse cx="307" cy="340" rx="27" ry="15" fill="#071523"/><ellipse cx="385" cy="355" rx="25" ry="14" fill="#071523"/>
+<g id="wyvern-far-wing"><use href="#wyvern-base" clip-path="url(#wyvern-wing-far)"/></g>
+<use href="#wyvern-base" mask="url(#wyvern-body)"/>
+<g id="wyvern-near-wing"><use href="#wyvern-base" clip-path="url(#wyvern-wing-near)"/></g>
+</g></g></g>
+</svg></div>
+<div class="scene-mist" aria-hidden="true"><span></span><span></span></div>
+<main>
+<header class="hero"><div class="eyebrow">ARK: Survival Ascended</div><h1>Ascension<span class="title-sub">XP Calculator</span></h1><p class="intro">Just one more level… and a few billion XP.</p></header>
+<section class="panel" aria-label="XP calculator">
+<form id="level-form" novalidate>
+<div class="inputs">
+<div class="field"><label for="current">Current Level</label><input id="current" enterkeyhint="next" type="number" inputmode="numeric" min="1" max="245" step="1" placeholder="1–245" required aria-describedby="error"></div>
+<div class="arrow" aria-hidden="true">→</div>
+<div class="field"><label for="target">Target Level</label><input id="target" enterkeyhint="done" type="number" inputmode="numeric" min="1" max="245" step="1" placeholder="1–245" required aria-describedby="error"></div>
+</div>
+<button class="calculate-button" id="calculate" type="submit">Calculate</button>
+<p id="error" class="error" hidden></p>
+</form>
+<div class="result" id="result" hidden tabindex="-1" aria-live="polite" aria-atomic="true">
+<div class="result-top"><span class="caption">XP required</span><span class="pill" id="gap"></span></div>
+<output class="amount" id="amount" for="current target">—</output>
+<div class="xp-visual" id="xp-visual" hidden>
+<div class="xp-meter-caption"><span id="xp-meter-title">XP progress</span><strong id="xp-percent">—</strong></div>
+<div class="xp-track" id="xp-meter" role="progressbar" aria-labelledby="xp-meter-title" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="xp-fill" aria-hidden="true"></span><span class="xp-marker" aria-hidden="true"></span><span class="xp-sweep" aria-hidden="true"></span></div>
+<div class="xp-meter-levels" aria-hidden="true"><span id="xp-current-level">Current</span><span id="xp-target-level">Target</span></div>
+</div>
+
+
+</div>
+<dl class="breakdown xp-breakdown" id="xp-breakdown" hidden aria-label="XP breakdown"><div><dt id="from-label">Current level total XP</dt><dd id="from-xp">—</dd></div><div><dt id="to-label">Target level total XP</dt><dd id="to-xp">—</dd></div></dl>
+
+<div class="reset-row"><button type="button" id="start-over" disabled>Start over</button></div>
+</section>
+<noscript>Enable JavaScript to calculate XP requirements.</noscript>
+
+
+
+</main>
+<script>
+'use strict';
+/*
+ * Source: https://wikily.gg/ark-survival-ascended/xp-calculator/
+ * Retrieved: 2026-10-19, public bundle module 346141, export F.
+ * Published multiplayer cumulative XP lookup, NOT independently DevKit verified.
+ * Zero-based index: XP_TOTALS[level - 1]. Level 1 = 0 XP.
+ * These integer literals transcribe the source's decimal/hex/exponent literals.
+ * Keep all entries explicit; never fill missing thresholds with a fitted curve.
+ */
+const XP_TOTALS = Object.freeze([
+    0, 5, 20, 40, 70, 120, 190, 270, 360, 450,
+    550, 660, 780, 910, 1050, 1200, 1360, 1530, 1710, 1900,
+    2100, 2310, 2530, 2760, 3000, 3250, 3510, 3780, 4060, 4350,
+    4650, 4960, 5280, 5610, 5950, 6300, 6660, 7030, 7410, 7800,
+    8200, 8610, 9030, 9460, 9900, 10350, 10810, 11280, 11760, 12250,
+    12750, 13260, 13780, 14310, 14850, 15400, 15960, 16530, 17110, 17700,
+    18850, 21078, 22448, 23908, 25462, 27499, 30249, 34786, 40004, 46805,
+    54762, 63714, 73000, 85000, 98000, 112000, 127500, 144500, 163500, 184500,
+    207500, 232570, 259896, 289681, 323189, 360886, 403318, 451484, 506186, 566358,
+    632547, 705354, 785442, 873538, 971538, 1083538, 1213538, 1368538, 1558538, 1798538,
+    2098538, 2468538, 2918538, 3458538, 4098538, 4208538, 4333538, 4478538, 4648538, 4848538,
+    5083538, 5358538, 5678538, 6048538, 6473538, 6873538, 7273538, 7673538, 8073538, 8473538,
+    8873538, 9273538, 9673538, 10073538, 10473538, 10873538, 11273538, 11673538, 12073538, 12473538,
+    13373538, 23373538, 33373538, 43373536, 53373536, 64048244, 74722952, 85397656, 96072360, 106747072,
+    117747072, 129747072, 142747072, 156747072, 171747072, 187747072, 204747072, 222747072, 241747072, 261747072,
+    282747072, 282747104, 305747104, 329747104, 354747104, 380747104, 407747104, 435747104, 464747104, 494747104,
+    525747104, 557747072, 590747136, 624747136, 659747072, 695747072, 732747136, 770747136, 809747072, 849747072,
+    892234432, 934721856, 977209216, 1019696576, 1104671232, 1189645952, 1274620672, 1359595392, 1444570112, 1529544832,
+    1614519552, 1699494272, 1784468992, 1869443712, 1954418304, 2039393152, 2124368000, 2209342720, 2294317568, 2379292160,
+    2464266240, 2549240576, 2634214656, 2719188992, 2804163072, 2889137152, 2974111488, 3059085568, 3144059648, 3229033728,
+    3314007808, 3398981888, 3483955968, 3568930048, 3653904128, 3738878208, 3823852288, 3908826368, 3993800448, 4078774528,
+    4163748608, 4248722688, 4333697024, 4418671104, 4503645184, 4590253568, 4678526976, 4768498176, 4860199936, 4953665024,
+    5048927232, 5146021376, 5244983296, 5345847808, 5448652288, 5553433600, 5660229632, 5769079808, 5880023040, 5993100288,
+    6108351488, 6225819136, 6345546240, 6467575296, 6591951360, 6718720000, 6847926784, 6979618816, 7113842688, 7250645504,
+    7390075392, 7532180480, 7677009920, 7824612352, 7975037952
+]);
+const MAX_LEVEL = 245;
+if (XP_TOTALS.length !== MAX_LEVEL || XP_TOTALS[0] !== 0 ||
+    XP_TOTALS.some((xp, i) => !Number.isSafeInteger(xp) || (i > 0 && xp <= XP_TOTALS[i - 1]))) {
+  throw new Error('Invalid cumulative XP lookup.');
+}
+const formatXP = value => value.toLocaleString('en-US');
+function calculateXP(current, target) {
+  if (!Number.isInteger(current) || !Number.isInteger(target) ||
+      current < 1 || target < 1 || current > MAX_LEVEL || target > MAX_LEVEL) {
+    throw new RangeError('Enter whole levels from 1 to 245.');
+  }
+  if (target < current) throw new RangeError('Target Level must be at least your Current Level.');
+  // BigInt subtracts integer thresholds exactly, including totals above 2^32.
+  // No bitwise operations: they would overflow at endgame XP totals.
+  return BigInt(XP_TOTALS[target - 1]) - BigInt(XP_TOTALS[current - 1]);
+}
+const currentInput = document.getElementById('current');
+const targetInput = document.getElementById('target');
+const error = document.getElementById('error');
+const amount = document.getElementById('amount');
+const gap = document.getElementById('gap');
+const resetButton = document.getElementById('start-over');
+const calculateButton = document.getElementById('calculate');
+const levelForm = document.getElementById('level-form');
+const resultPanel = document.getElementById('result');
+let calculationRevision = 0;
+const xpVisual = document.getElementById('xp-visual');
+const xpMeter = document.getElementById('xp-meter');
+let meterFrame = null;
+function updateMeter(current, target) {
+  if (meterFrame !== null) cancelAnimationFrame(meterFrame);
+  const total = XP_TOTALS[target - 1];
+  const percentage = total === 0 ? 100 : Math.min(100, XP_TOTALS[current - 1] / total * 100);
+  const percentText = percentage.toLocaleString('en-US', {maximumFractionDigits: 1});
+  xpVisual.hidden = false;
+  document.getElementById('xp-meter-title').textContent = `XP toward level ${target}`;
+  document.getElementById('xp-percent').textContent = `${percentText}% earned`;
+  document.getElementById('xp-current-level').textContent = `Current · ${current}`;
+  document.getElementById('xp-target-level').textContent = `Target · ${target}`;
+  xpMeter.setAttribute('aria-valuenow', String(percentage));
+  xpMeter.setAttribute('aria-valuetext', `${percentText} percent of total XP to level ${target} earned, at the start of level ${current}`);
+  xpVisual.classList.remove('updating');
+  xpVisual.style.setProperty('--earned', '0%');
+  // Commit the starting width, then animate the meter without changing the exact XP result.
+  void xpVisual.offsetWidth;
+  meterFrame = requestAnimationFrame(() => {
+    xpVisual.style.setProperty('--earned', `${percentage}%`);
+    xpVisual.classList.add('updating');
+    meterFrame = null;
+  });
+}
+function clearMeter() {
+  if (meterFrame !== null) cancelAnimationFrame(meterFrame);
+  meterFrame = null;
+  xpVisual.hidden = true;
+  xpVisual.style.setProperty('--earned', '0%');
+  xpVisual.classList.remove('updating');
+}
+const STORAGE_KEY = 'asa-ascension-xp-levels-v1';
+const validLevel = n => Number.isInteger(n) && n >= 1 && n <= MAX_LEVEL;
+function restoreLevels() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!saved || saved.version !== 1) return;
+    const validSaved = value => value === '' ||
+      (typeof value === 'string' && /^\d+$/.test(value) && validLevel(Number(value)));
+    if (!validSaved(saved.current) || !validSaved(saved.target)) return;
+    if (saved.current && saved.target && Number(saved.target) < Number(saved.current)) return;
+    currentInput.value = saved.current;
+    targetInput.value = saved.target;
+  } catch { /* The calculator also works when browser storage is unavailable. */ }
+}
+function saveLevels() {
+  const current = currentInput.value;
+  const target = targetInput.value;
+  if ((current !== '' && !validLevel(Number(current))) ||
+      (target !== '' && !validLevel(Number(target))) ||
+      currentInput.validity.badInput || targetInput.validity.badInput ||
+      (current !== '' && target !== '' && Number(target) < Number(current))) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({version: 1, current, target}));
+  } catch { /* Storage is optional; calculation never depends on it. */ }
+}
+function clearResult(message = '') {
+  resultPanel.hidden = true;
+  clearMeter();
+  document.getElementById('xp-breakdown').hidden = true;
+  error.textContent = message;
+  error.hidden = !message;
+  amount.textContent = '—';
+  gap.textContent = message ? 'Check levels' : '';
+}
+function syncControls() {
+  resetButton.disabled = currentInput.value === '' && targetInput.value === '' &&
+    !currentInput.validity.badInput && !targetInput.validity.badInput;
+  calculateButton.disabled = false;
+  calculateButton.textContent = 'Calculate';
+}
+function inputProblem() {
+  const current = currentInput.valueAsNumber;
+  const target = targetInput.valueAsNumber;
+  const currentInvalid = !validLevel(current);
+  const targetInvalid = !validLevel(target);
+  const reversed = !currentInvalid && !targetInvalid && target < current;
+  currentInput.setAttribute('aria-invalid', String(currentInvalid));
+  targetInput.setAttribute('aria-invalid', String(targetInvalid || reversed));
+  if (currentInvalid || targetInvalid) return 'Enter whole levels from 1 to 245.';
+  if (reversed) return 'Target Level must be at least your Current Level.';
+  return '';
+}
+function waitForKeyboard() {
+  // Wait for the keyboard's viewport resize to settle before revealing the meter.
+  return new Promise(resolve => {
+    const viewport = window.visualViewport;
+    const started = performance.now();
+    let timer;
+    const finish = () => {
+      clearTimeout(timer);
+      clearTimeout(deadline);
+      if (viewport) viewport.removeEventListener('resize', resized);
+      resolve();
+    };
+    const resized = () => {
+      clearTimeout(timer);
+      timer = setTimeout(finish, Math.max(180, 420 - (performance.now() - started)));
+    };
+    const deadline = setTimeout(finish, 1100);
+    if (viewport) viewport.addEventListener('resize', resized);
+    timer = setTimeout(finish, 420);
+  });
+}
+async function submitCalculation(event) {
+  event.preventDefault();
+  const problem = inputProblem();
+  if (problem) {
+    clearResult(problem);
+    (currentInput.getAttribute('aria-invalid') === 'true' ? currentInput : targetInput).focus();
+    return;
+  }
+  const revision = ++calculationRevision;
+  const current = currentInput.valueAsNumber;
+  const target = targetInput.valueAsNumber;
+  calculateButton.disabled = true;
+  currentInput.blur();
+  targetInput.blur();
+  saveLevels();
+  await waitForKeyboard();
+  if (revision !== calculationRevision) return;
+  try {
+    const xp = calculateXP(current, target);
+    error.hidden = true;
+    error.textContent = '';
+    amount.textContent = formatXP(xp);
+    resultPanel.hidden = false;
+    document.getElementById('xp-breakdown').hidden = false;
+    document.getElementById('from-label').textContent = `Level ${current} total XP`;
+    document.getElementById('to-label').textContent = `Level ${target} total XP`;
+    document.getElementById('from-xp').textContent = formatXP(XP_TOTALS[current - 1]);
+    document.getElementById('to-xp').textContent = formatXP(XP_TOTALS[target - 1]);
+    const count = target - current;
+    gap.textContent = count === 0 ? 'Target reached' : `${count} ${count === 1 ? 'level' : 'levels'} to go`;
+    // Show the full visual before playing it. This does not reopen the keyboard.
+    xpVisual.hidden = false;
+    resultPanel.scrollIntoView({behavior: 'auto', block: 'center'});
+    updateMeter(current, target);
+  } catch (err) {
+    clearResult(err.message);
+  } finally {
+    syncControls();
+  }
+}
+function onLevelInput() {
+  calculationRevision++;
+  clearResult();
+  currentInput.setAttribute('aria-invalid', 'false');
+  targetInput.setAttribute('aria-invalid', 'false');
+  syncControls();
+  saveLevels();
+}
+currentInput.addEventListener('input', onLevelInput);
+targetInput.addEventListener('input', onLevelInput);
+levelForm.addEventListener('submit', submitCalculation);
+currentInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    targetInput.focus();
+  }
+});
+resetButton.addEventListener('click', () => {
+  calculationRevision++;
+  currentInput.value = '';
+  targetInput.value = '';
+  try { localStorage.removeItem(STORAGE_KEY); } catch { /* Clearing works without storage. */ }
+  clearResult();
+  currentInput.setAttribute('aria-invalid', 'false');
+  targetInput.setAttribute('aria-invalid', 'false');
+  syncControls();
+  currentInput.focus({preventScroll: true});
+});
+restoreLevels();
+clearResult();
+syncControls();
+
+// A single distant visitor, clipped to the sky and paused while the app is hidden.
+const flightScene = document.getElementById('flight-scene');
+const wyvern = document.getElementById('distant-wyvern');
+const nearWing = document.getElementById('wyvern-near-wing');
+const farWing = document.getElementById('wyvern-far-wing');
+const flightMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let flightTimer = null;
+let flightFrame = null;
+let flightGeometry = null;
+const randomBetween = (min, max) => min + Math.random() * (max - min);
+function positionFlightScene() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const scale = Math.max(width / 1536, height / 1024);
+  const left = (width - 1536 * scale) * (width <= 520 ? .95 : .5);
+  const top = (height - 1024 * scale) / 2;
+  Object.assign(flightScene.style, {width: `${1536 * scale}px`, height: `${1024 * scale}px`, left: `${left}px`, top: `${top}px`});
+  flightGeometry = {left: -left / scale, width: width / scale};
+}
+const skyline = [[0,288],[252,215],[328,295],[478,386],[565,440],[665,513],[730,495],[880,535],[1020,453],[1170,465],[1225,491],[1320,382],[1390,455],[1480,362],[1536,360]];
+function horizonAt(x) {
+  for (let i = 1; i < skyline.length; i++) {
+    const a = skyline[i-1], b = skyline[i];
+    if (x <= b[0]) return a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
+  }
+  return 400;
+}
+function scheduleFlight(initial = false) {
+  clearTimeout(flightTimer);
+  if (document.hidden || flightMotion.matches) return;
+  flightTimer = setTimeout(startFlight, randomBetween(initial ? 9000 : 55000, initial ? 16000 : 95000));
+}
+function stopFlight() {
+  clearTimeout(flightTimer);
+  if (flightFrame !== null) cancelAnimationFrame(flightFrame);
+  flightFrame = null;
+  wyvern.setAttribute('visibility', 'hidden');
+}
+function startFlight() {
+  if (document.hidden || flightMotion.matches) return;
+  positionFlightScene();
+  const startX = flightGeometry.left - 42;
+  const endX = Math.min(1310, flightGeometry.left + flightGeometry.width * randomBetween(.52, .65));
+  const startY = randomBetween(70, 120);
+  const endY = horizonAt(endX) + 65;
+  const duration = randomBetween(11000, 14000);
+  const started = performance.now();
+  wyvern.setAttribute('visibility', 'visible');
+  function frame(now) {
+    const t = Math.min(1, (now - started) / duration);
+    const x = startX + (endX - startX) * t;
+    const y = startY + (endY - startY) * (t * t * .5 + t * .5) + Math.sin(t * Math.PI * 2) * 4;
+    const size = 1 - .3 * t;
+    // Rotate full wings through the downstroke instead of collapsing them flat.
+    // A slower recovery and a quicker power stroke add a gentle lift to the body.
+    const cycle = ((now - started) / 2500) % 1;
+    const stroke = cycle < .42
+      ? .5 - .5 * Math.cos(Math.PI * cycle / .42)
+      : .5 + .5 * Math.cos(Math.PI * (cycle - .42) / .58);
+    const farCycle = (cycle + .035) % 1;
+    const farStroke = farCycle < .42
+      ? .5 - .5 * Math.cos(Math.PI * farCycle / .42)
+      : .5 + .5 * Math.cos(Math.PI * (farCycle - .42) / .58);
+    const nearAngle = -8 + 112 * stroke;
+    const farAngle = 5 - 107 * farStroke;
+    nearWing.setAttribute('transform', `rotate(${nearAngle.toFixed(3)} 385 355)`);
+    farWing.setAttribute('transform', `rotate(${farAngle.toFixed(3)} 307 340)`);
+    const lift = Math.sin(cycle * Math.PI * 2) * 1.5;
+    const pitch = 8 + Math.sin(cycle * Math.PI * 2 - .3) * 2;
+    wyvern.setAttribute('transform', `translate(${x.toFixed(2)} ${(y + lift).toFixed(2)}) rotate(${pitch.toFixed(2)}) scale(-${size.toFixed(3)} ${size.toFixed(3)})`);
+    wyvern.setAttribute('opacity', String(Math.min(.88, t * 5)));
+    if (t < 1) flightFrame = requestAnimationFrame(frame);
+    else { flightFrame = null; wyvern.setAttribute('visibility', 'hidden'); scheduleFlight(); }
+  }
+  flightFrame = requestAnimationFrame(frame);
+}
+positionFlightScene();
+window.addEventListener('resize', positionFlightScene);
+document.addEventListener('visibilitychange', () => { stopFlight(); if (!document.hidden) scheduleFlight(true); });
+flightMotion.addEventListener('change', () => { stopFlight(); scheduleFlight(true); });
+scheduleFlight(true);
+
+</script>
+</body>
+</html>
