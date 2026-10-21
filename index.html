@@ -77,9 +77,9 @@ details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{displ
 .obelisk-beam{opacity:.4;transform-box:view-box;transform-origin:1415px 235px;animation:obelisk-breathe 4.8s ease-in-out infinite;pointer-events:none}@keyframes obelisk-breathe{0%,100%{opacity:.16}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.obelisk-beam{animation:none;opacity:.3}}
 
-/* A quiet install utility below the tagline, clear of the obelisk. */
+/* A quiet install utility below the calculator, clear of the obelisk. */
 .hero{z-index:2}
-.app-tools{position:relative;z-index:5;display:flex;justify-content:flex-start;min-width:0;max-width:100%;margin:8px 0 0;overflow:visible}
+.app-tools{position:relative;z-index:5;display:flex;justify-content:flex-start;min-width:0;max-width:100%;margin:8px 4px 0;overflow:visible}
 .install-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:0;max-width:100%;min-height:44px;padding:8px 0;font-family:inherit;font-size:11px;font-weight:500;letter-spacing:.3px;color:#93afbf;background:transparent;border:1px solid transparent;border-radius:1px;box-shadow:none;overflow:hidden}
 .install-button svg{width:14px;height:14px;flex:0 0 14px;overflow:hidden;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
 .install-button:hover{color:#c4e4ef;background:transparent;border-color:transparent}
@@ -105,10 +105,7 @@ details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{displ
 <main>
 
 <header class="hero"><div class="eyebrow">ARK: Survival Ascended</div><h1>Ascension<span class="title-sub">XP Calculator</span></h1><p class="intro">Just one more level… and a few billion XP.</p>
-<div class="app-tools" id="app-tools" hidden>
-<button type="button" class="install-button" id="install-app" aria-label="Install Ascension XP Calculator" aria-controls="install-help" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1V10M4 6L8 10 12 6M2 11V14H14V11"/></svg><span>Install</span></button>
-<div class="install-help" id="install-help" role="region" aria-label="Install calculator" hidden><p id="install-help-text"></p><button type="button" id="install-close">Got it</button></div>
-</div>
+
 </header>
 <section class="panel" aria-label="XP calculator">
 <form id="level-form" novalidate>
@@ -135,6 +132,10 @@ details{min-width:0;max-width:100%;font-size:12px;text-shadow:none}summary{displ
 
 <div class="reset-row"><button type="button" id="start-over" disabled>Start over</button></div>
 </section>
+<div class="app-tools" id="app-tools" hidden>
+<button type="button" class="install-button" id="install-app" aria-label="Install Ascension XP Calculator" aria-controls="install-help" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1V10M4 6L8 10 12 6M2 11V14H14V11"/></svg><span>Install</span></button>
+<div class="install-help" id="install-help" role="region" aria-label="Install calculator" hidden><p id="install-help-text"></p><button type="button" id="install-close">Got it</button></div>
+</div>
 <noscript>Enable JavaScript to calculate XP requirements.</noscript>
 
 
